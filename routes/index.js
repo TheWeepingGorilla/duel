@@ -3,6 +3,13 @@ var router = express.Router();
 var passport = require('passport');
 var Account = require('../models/account');
 
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/')
+}
+
 router.get('/', function (req, res) {
     res.render('index', { user : req.user });
 });
@@ -16,7 +23,6 @@ router.post('/register', function(req, res) {
         if (err) {
           return res.render("register", {info: "Sorry. That username already exists. Try again."});
         }
-
         passport.authenticate('local')(req, res, function () {
             res.redirect('/');
         });
@@ -36,7 +42,7 @@ router.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-router.get('/ping', function(req, res){
+router.get('/ping', ensureAuthenticated, function(req, res){
     res.status(200).send("pong!");
 });
 
