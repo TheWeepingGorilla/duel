@@ -42,7 +42,12 @@ router.get('/logout', function(req, res) {
 	res.redirect('/');
 });
 
-router.get('/duel', ensureAuthenticated, function(req, res) {
+// router.get('/duel', ensureAuthenticated, function(req, res) {
+// 	res.render('duel', { user : req.user });
+// });
+
+// auth removed for development so login isn't required after every file change
+router.get('/duel', function(req, res) {
 	res.render('duel', { user : req.user });
 });
 
